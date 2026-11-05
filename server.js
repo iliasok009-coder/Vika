@@ -307,7 +307,8 @@ if (require.main === module) {
     const port = Number(process.env.PORT ?? 3000);
     if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT должен быть числом от 1 до 65535.');
     const app = createApp();
-    const server = app.listen(port, '0.0.0.0', () => console.log(`CINEMA: сервер запущен на порту ${port}`));
+    const server = app.listen(port, '0.0.0.0');
+    server.once('listening', () => console.log(`CINEMA: сервер запущен на порту ${port}`));
     server.on('error', error => { console.error('Не удалось запустить сервер:', error.message); app.locals.close(); process.exitCode = 1; });
     for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => server.close(() => { app.locals.close(); process.exit(0); }));
   } catch (error) { console.error('Ошибка запуска:', error.message); process.exitCode = 1; }
