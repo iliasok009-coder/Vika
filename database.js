@@ -1,4 +1,4 @@
-const Database = require('better-sqlite3');
+const Database = require('./sqlite');
 
 const SEAT_COUNT = 40;
 const DEFAULT_TIME_ZONE = 'Asia/Qyzylorda';

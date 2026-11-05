@@ -6,19 +6,18 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
-    "check": "node --check server.js && node --check database.js && node --check script.js"
+    "check": "node --check server.js && node --check database.js && node --check sqlite.js && node --check script.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "better-sqlite3": "^13.0.3",
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
     "express-session": "^1.19.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   }
 }

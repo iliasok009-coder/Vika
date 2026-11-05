@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { mkdtemp, rm } = require('node:fs/promises');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
-const Database = require('better-sqlite3');
+const Database = require('../sqlite');
 const { createApp } = require('../server');
 
 const FIXED_NOW = '2030-05-10T10:00:00.000Z';
