@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#131313">
+  <title>CINEMA — билеты в кино</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#" aria-label="CINEMA, на главную">CINEMA<span>●</span></a>
+    <nav aria-label="Основное меню">
+      <a href="#movies">Афиша</a>
+      <a href="#booking">Билеты</a>
+      <button id="adminOpenBtn" class="text-button" type="button" aria-controls="adminPanel" aria-expanded="false">Администратор ↗</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-dot"></span> БОЛЬШОЙ ЭКРАН. НАСТОЯЩИЕ ЭМОЦИИ.</p>
+        <h1 id="heroTitle">Ваше место<br>в мире <em>кино.</em></h1>
+        <p class="hero-description">Откройте новую историю. Выберите сеанс, найдите своё место — и пусть всё остальное подождёт.</p>
+        <a href="#movies" class="button">Смотреть афишу <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="film-orbit orbit-one"></div><div class="film-orbit orbit-two"></div>
+        <span class="art-top">CINEMA / 01</span>
+        <div class="art-title">THE<br>BIG<br><span>SCREEN.</span></div>
+        <span class="art-bottom">ЗДЕСЬ НАЧИНАЮТСЯ ИСТОРИИ</span>
+      </div>
+      <div class="hero-meta"><span>Один зал · 40 мест</span><span>Бронирование онлайн · без оплаты</span><span id="cinemaZone">Время кинотеатра: UTC+5</span></div>
+    </section>
+
+    <div id="pageMessage" class="notice" role="status" aria-live="polite" hidden></div>
+    <button id="retryLoad" type="button" class="secondary" hidden>Повторить загрузку</button>
+
+    <section id="movies" class="catalogue" aria-labelledby="moviesTitle">
+      <div class="section-heading"><div><p class="eyebrow">АФИША КИНОТЕАТРА</p><h2 id="moviesTitle">Сейчас на экране</h2></div><p id="catalogueCount" class="muted">Загружаем расписание…</p></div>
+      <div id="movieList" class="movies" aria-live="polite"><p class="empty-state">Загрузка фильмов…</p></div>
+    </section>
+
+    <section id="booking" class="booking-section" aria-labelledby="bookingTitle">
+      <div class="section-heading"><div><p class="eyebrow">ВАШ ВЕЧЕР В КИНО</p><h2 id="bookingTitle">Выберите лучшие места</h2></div><span class="step-label">Фильм → Сеанс → Места → Подтверждение</span></div>
+      <div class="booking-layout">
+        <div class="hall-panel">
+          <div class="selection-fields">
+            <label>Фильм<select id="movieSelect" aria-label="Выберите фильм" disabled><option value="">Загрузка…</option></select></label>
+            <label>Сеанс<select id="session" aria-label="Выберите сеанс" disabled><option value="">Загрузка…</option></select></label>
+          </div>
+          <p id="sessionInfo" class="muted">Выберите фильм и сеанс из расписания.</p>
+          <div class="screen" aria-hidden="true"><span>ЭКРАН</span></div>
+          <p id="seatStatus" class="seat-status" role="status">Загрузка мест…</p>
+          <div id="seats" class="seats" role="group" aria-label="Схема зала, 5 рядов по 8 мест"></div>
+          <div class="legend"><span><i class="seat-swatch"></i>Свободно</span><span><i class="seat-swatch selected"></i>Выбрано</span><span><i class="seat-swatch occupied"></i>Занято</span></div>
+          <p class="hall-footnote">Номер на схеме — номер места в зале. Состояние мест обновляется автоматически.</p>
+        </div>
+        <aside class="order-panel" aria-label="Ваш заказ">
+          <p class="eyebrow">ВАШ ЗАКАЗ</p>
+          <h3 id="summaryMovie">Выберите фильм</h3>
+          <p id="summarySession" class="muted">Дата и время сеанса</p>
+          <dl class="order-details"><div><dt>Места</dt><dd id="summarySeats">Ещё не выбраны</dd></div><div><dt>Билетов</dt><dd id="count">0</dd></div><div><dt>Цена за билет</dt><dd id="summaryPrice">—</dd></div></dl>
+          <div class="total-line"><span>Итого</span><strong><span id="total">0</span> ₸</strong></div>
+          <form id="bookingForm">
+            <label for="customerName">Ваше имя</label>
+            <input type="text" id="customerName" name="customerName" placeholder="Как к вам обращаться?" minlength="2" maxlength="100" autocomplete="name" required>
+            <button id="bookBtn" class="wide" type="submit" disabled>Проверить заказ <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="fine-print">Оплата в кассе кинотеатра. Перед бронированием вы сможете проверить все детали заказа.</p>
+          <div id="message" class="notice" role="status" aria-live="polite" hidden></div>
+        </aside>
+      </div>
+      <article id="bookingReceipt" class="receipt" hidden aria-live="polite" tabindex="-1"></article>
+    </section>
+
+    <section id="adminPanel" class="admin-panel" hidden aria-labelledby="adminTitle">
+      <div class="section-heading"><div><p class="eyebrow">УПРАВЛЕНИЕ КИНОТЕАТРОМ</p><h2 id="adminTitle">Панель администратора</h2></div><button id="adminCloseBtn" class="secondary" type="button">Закрыть</button></div>
+      <div id="adminMessage" class="notice" role="status" aria-live="polite" hidden></div>
+      <form id="adminLogin" class="login-form">
+        <h3>Вход в систему</h3>
+        <p class="muted">Используйте логин и пароль администратора из настроек сервера.</p>
+        <label for="adminLoginInput">Логин</label><input id="adminLoginInput" name="login" required maxlength="150" autocomplete="username">
+        <label for="adminPasswordInput">Пароль</label><input id="adminPasswordInput" name="password" type="password" required maxlength="1000" autocomplete="current-password">
+        <button id="adminLoginBtn" type="submit">Войти →</button>
+      </form>
+      <div id="adminDashboard" hidden>
+        <div class="admin-toolbar"><div class="tabs" aria-label="Разделы управления"><button type="button" data-tab="bookings" class="active" aria-pressed="true">Бронирования</button><button type="button" data-tab="movies" aria-pressed="false">Фильмы</button><button type="button" data-tab="sessions" aria-pressed="false">Сеансы и места</button></div><button id="adminLogoutBtn" type="button" class="secondary">Выйти</button></div>
+        <div id="adminTab-bookings">
+          <div class="subheading"><h3>Все бронирования</h3><button id="showBookingsBtn" type="button" class="secondary">Обновить</button></div>
+          <div id="adminBookings" class="admin-list"></div>
+        </div>
+        <div id="adminTab-movies" hidden>
+          <div class="admin-columns">
+            <form id="movieForm" class="admin-form">
+              <h3>Добавить фильм</h3>
+              <label for="movieTitle">Название</label><input id="movieTitle" name="title" required minlength="1" maxlength="150" placeholder="Название фильма">
+              <label for="movieGenre">Жанр</label><input id="movieGenre" name="genre" required maxlength="100" placeholder="Например: фантастика, драма">
+              <div class="form-row"><label>Длительность, мин.<input name="duration" type="number" min="1" max="600" required placeholder="120"></label><label>Возраст<select name="age_rating"><option>0+</option><option>6+</option><option>12+</option><option selected>16+</option><option>18+</option></select></label></div>
+              <div class="form-row"><label>Год<input name="year" type="number" min="1888" max="2031" placeholder="2026"></label><label>Режиссёр<input name="director" maxlength="150" placeholder="Имя режиссёра"></label></div>
+              <label for="movieDescription">Описание</label><textarea id="movieDescription" name="description" rows="4" required minlength="10" maxlength="4000" placeholder="О чём этот фильм?"></textarea>
+              <button type="submit">Добавить фильм</button>
+            </form>
+            <div><h3>Фильмы в базе</h3><div id="adminMovies" class="admin-list"></div></div>
+          </div>
+        </div>
+        <div id="adminTab-sessions" hidden>
+          <div class="admin-columns">
+            <form id="sessionForm" class="admin-form">
+              <h3 id="sessionFormTitle">Добавить сеанс</h3>
+              <input type="hidden" name="id">
+              <label for="sessionMovie">Фильм</label><select id="sessionMovie" name="movie_id" required></select>
+              <div class="form-row"><label>Дата<input id="sessionDate" name="date" type="date" required></label><label>Время<input name="time" type="time" required></label></div>
+              <label for="sessionPrice">Цена билета, ₸</label><input id="sessionPrice" name="price" type="number" min="1" max="1000000" step="1" required placeholder="1500">
+              <p class="fine-print">Один зал, 40 мест. Сеансы не должны пересекаться. Сеанс с бронированиями нельзя изменить или удалить: сначала отмените брони.</p>
+              <div class="button-row"><button id="sessionSubmit" type="submit">Добавить сеанс</button><button id="cancelSessionEdit" type="button" class="secondary" hidden>Отменить</button></div>
+            </form>
+            <div><div class="subheading"><h3>Расписание</h3><button id="refreshAdminSessions" type="button" class="secondary">Обновить</button></div><div id="adminSessions" class="admin-list session-list"></div></div>
+          </div>
+          <div id="adminOccupancy" class="occupancy-panel" hidden><h3 id="occupancyTitle">Места на сеанс</h3><p id="occupancyInfo" class="muted"></p><div id="adminSeats" class="seats admin-seats" aria-label="Свободные и занятые места"></div><div class="legend"><span><i class="seat-swatch"></i>Свободно</span><span><i class="seat-swatch occupied"></i>Занято</span></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer><a class="logo" href="#">CINEMA<span>●</span></a><p>Место для ваших любимых историй.</p><span>© 2026 CINEMA · Виктория и Милана</span></footer>
+
+  <dialog id="confirmDialog" aria-labelledby="confirmTitle">
+    <div class="dialog-body"><p class="eyebrow">ОСТАЛСЯ ОДИН ШАГ</p><h2 id="confirmTitle">Проверьте бронирование</h2><div id="confirmDetails"></div><p class="fine-print">Места закрепятся за вами после подтверждения. Оплата производится в кассе.</p><div id="confirmMessage" class="notice" role="status" hidden></div><div class="button-row"><button id="confirmBooking" type="button">Подтвердить бронь</button><button id="cancelBooking" type="button" class="secondary">Назад</button></div></div>
+  </dialog>
+</body>
+</html>
